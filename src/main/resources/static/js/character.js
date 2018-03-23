@@ -25,7 +25,7 @@ $(document).ready(function() {
 });
 
 function create(pid) {
-	no = pid == playerId ? 'c1' : 'c2';
+	no = pid == 0 ? 'c1' : 'c2';
 	console.log(pid, playerId);
     $('.content').append('<div class="character" id="'+no+'"></div>');
     console.log($('#'+no));

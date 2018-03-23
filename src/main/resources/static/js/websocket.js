@@ -10,12 +10,14 @@ function websocket() {
 		console.log("Connecting...");
 		this.socket = new SockJS("/ws");
 		this.stompClient = Stomp.over(this.socket);
+		this.stompClient.handler = this.handler;
+
 		// 创建连接
 		this.stompClient.connect({}, function() {
-			// setConnected(true);
 			console.log('Connected: ' + 'frame demo server.');
-			this.subscribe('/topic/send', function(greeting) {
-				console.log(JSON.parse(greeting.body).content);
+			var handler = this.handler;
+			this.subscribe('/topic/send', function(data) {
+				handler.socketMessageHandler(JSON.parse(data.body));
 			});
 		});
 	}
@@ -42,11 +44,10 @@ function websocket() {
 }
 
 // websocket message handler
-function handler(msg) {
-	this.socketMessageHandler = function() {
-		var data = $.parseJSON(m);
-		var cmd = data.cmd;
-		var pid = data.playerId;
+function handler() {
+	this.socketMessageHandler = function(msg) {
+		var cmd = msg.cmd;
+		var pid = msg.playerId;
 		switch (cmd) {
 		case CHARACTER_STATUS['CREATE']:
 			create(pid);
