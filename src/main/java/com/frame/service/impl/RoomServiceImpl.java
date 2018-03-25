@@ -12,8 +12,11 @@ package com.frame.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import com.frame.constants.FrameConstant;
+import com.frame.constants.MatchConstant;
 import com.frame.data.RoomProcessor;
-import com.frame.service.RoomService;
+import com.frame.messageDto.Message;
+import com.frame.service.IRoomService;
 
 /**
  * RoomServiceImpl.java
@@ -21,11 +24,29 @@ import com.frame.service.RoomService;
  * @version 1.0.0.0 2018年3月23日
  */
 @Service
-public class RoomServiceImpl implements RoomService {
+public class RoomServiceImpl implements IRoomService {
 
-    @Override
-    public boolean addNewPlayer(int playerId) {
-        return RoomProcessor.getInstance().addNewPlayer(playerId);
-    }
+	/* (non-Javadoc)
+	 * @see com.frame.service.RoomService#doMatch(com.frame.messageDto.Message)
+	 */
+	@Override
+	public String doMatch(Message message) {
+		if (message.getOp() == FrameConstant.OPERATION_MATCH) {
+			// 是操作相关
+			switch(message.getCmd()) {
+				case MatchConstant.MATCH_OPERATION_START:
+					int result = RoomProcessor.getInstance().addNewPlayer(message.getPlayerId());
+					if (result == -1) {
+						return FrameConstant.getOperationResult(message, FrameConstant.OPERATION_FAIL, "");
+					} else {
+						return FrameConstant.getOperationResult(message, FrameConstant.OPERATION_SUCCESS, String.valueOf(result));
+					}
+				case MatchConstant.MATCH_OPERATION_RENEW:
+					RoomProcessor.getInstance().renewRoom();
+					return FrameConstant.getOperationResult(message, FrameConstant.OPERATION_SUCCESS, "");
+			}
+		}
+		return FrameConstant.getOperationResult(message, FrameConstant.OPERATION_UNSUPPORT, "OPERATION_UNSUPPORT");
+	}
 
 }

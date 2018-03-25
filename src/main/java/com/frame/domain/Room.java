@@ -10,6 +10,14 @@
  */
 package com.frame.domain;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.alibaba.fastjson.JSON;
+import com.frame.messageDto.Message;
+
 /**
  * Room.java
  * @author LiuChen
@@ -20,9 +28,53 @@ public class Room {
     private Player left;
     
     private Player right;
+    
+    private int num;
+    
+    private Map<Integer, List<Message>> msgQueue = new ConcurrentHashMap<Integer, List<Message>>();
+    
+    // 帧号
+    private volatile int frameNo;
+    
+    private volatile boolean start = false;
+    
+    // 每一帧的逻辑
+    public synchronized String tick() {
+    	if (!start) {
+    		return "";
+    	}
+    	List<Message> queue = this.msgQueue.get(frameNo);
+    	frameNo++;
+    	this.msgQueue.put(frameNo, new LinkedList<Message>());
+    	return JSON.toJSONString(queue);
+    }
+    
+    // 增加新的逻辑
+    public synchronized void addMessage(Message newMessage) {
+    	if (!start) {
+    		return ;
+    	}
+    	if (this.msgQueue.containsKey(this.frameNo)) {
+    		this.msgQueue.get(this.frameNo).add(newMessage);
+    	}
+    }
+    
+    // 开始帧同步
+    public void start() {
+    	if (start) {
+    		return ;
+    	}
+    	this.frameNo = 1;
+    	this.msgQueue.put(this.frameNo, new LinkedList<Message>());
+    	this.start = true;
+    }
 
     public Player getLeft() {
         return left;
+    }
+    
+    public void incNum() {
+    	this.num++;
     }
 
     public void setLeft(Player left) {
@@ -36,5 +88,21 @@ public class Room {
     public void setRight(Player right) {
         this.right = right;
     }
+
+	public int getFrameNo() {
+		return frameNo;
+	}
+
+	public void setFrameNo(int frameNo) {
+		this.frameNo = frameNo;
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
 
 }

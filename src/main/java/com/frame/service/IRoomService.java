@@ -10,12 +10,19 @@
  */
 package com.frame.service;
 
+import com.frame.messageDto.Message;
+
 /**
  * RoomService.java
  * @author LiuChen
  * @version 1.0.0.0 2018年3月23日
  */
-public interface RoomService {
+public interface IRoomService {
 
-    public boolean addNewPlayer(int playerId);
+	/**
+	 * 处理比赛相关逻辑
+	 * @param message
+	 * @return
+	 */
+	public String doMatch(Message message);
 }

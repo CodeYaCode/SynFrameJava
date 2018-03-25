@@ -1,6 +1,7 @@
 /*index.css*/
 html {
     overflow: hidden;
+    height: 100%;
 }
 body {
     overflow: hidden;
@@ -10,37 +11,130 @@ body {
     height: 100%;
     background: gray;
 }
-.content {
+/* status start */
+.status {
     position: fixed;
     top: 0px;
-    bottom: 50px;
     left: 0px;
     right: 0px;
-    margin: 0;
+    text-align: center;
+    font-weight: 600;
+}
+.red {
+    background: #F44339;
+    color: #fff;
+}
+.green {
+    background: #00EE66;
+    color: #fff;
+}
+.yellow {
+    background: #FFFF66;
+    color: #000;
+}
+/* status end */
+
+/* container start */
+.container {
+    margin: 0 auto;
     padding: 0;
+    width: 960px;
+    height: 100%;
     background: #000;
 }
+/* content start */
+.content {
+    margin: 0 auto;
+    padding: 0;
+    width: 960px;
+    height: 300px;
+    background: #000;
+}
+/* content end */
+/* ctrl start */
+#playerId {
+    position: relative;
+    top: 50px;
+    width: 50px;
+    height: 25px;
+    text-align: center;
+    font-size: 15px;
+    border-style: none;
+    border-radius: 5px;
+}
+.start {
+    position: relative;
+    left: 50px;
+    top: 50px;
+    width: 100px;
+    height: 30px;
+    border-style: none;
+    border-radius: 15px;
+}
+.start:hover {
+    cursor: pointer;
+    background: #ccc;
+}
+.renew {
+    position: relative;
+    left: 100px;
+    top: 50px;
+    width: 100px;
+    height: 30px;
+    border-style: none;
+    border-radius: 15px;
+}
+.renew:hover {
+    cursor: pointer;
+    background: #ccc;
+}
+/* ctrl end */
+/* container end*/
 
-.character {
-    position: absolute;
-    top: 30px;
+
+
+/* hp bar */
+.hpbar{
+    position: relative;
+    top:22px;
+    width: 400px;
+    height: 30px;
+    background: #F44339;
+    float: left;
+}
+/* hp bar */
+
+
+.player {
+    position: relative;
+    top: 65px;
     width: 80px;
     height: 78px;
-    background-image: url('../image/character.png');
+    background-image: url('../image/player.png');
     background-repeat: no-repeat;
     background-position: 0px 0px;
+}
+
+.me {
+    border: 1px solid #eee;
+}
+
+#c0 {
+    left: 300px;
+}
+
+#c1 {
+    left: 620px;
+}
+
+.right {
+}
+
+.left {
+    transform:rotateY(180deg);
 }
 
 .ctl {
     position: absolute;
     bottom: 0px;
-}
-
-#c1 {
-    left: 300px;
-}
-
-#c2 {
-    left: 620px;
-    transform:rotateY(180deg);
 }

@@ -1,27 +1,35 @@
 // 默认地址
 const DEFAULT_ADDRESS = "/ws";
 
-function websocket() {
+function websocket(framecontroller) {
 	this.handler = new handler();
 	this.socket = null;
 	this.stompClient = null;
+	this.framecontroller = framecontroller;
+	this.isconnected = false;
 	// 连接
 	this.connect = function() {
+		if (this.isconnected) {
+			console.log('Already connected.');
+			return ;
+		}
 		console.log("Connecting...");
 		this.socket = new SockJS("/ws");
 		this.stompClient = Stomp.over(this.socket);
-		this.stompClient.handler = this.handler;
-
+		var me = this;
 		// 创建连接
 		this.stompClient.connect({}, function() {
-			console.log('Connected: ' + 'frame demo server.');
-			var handler = this.handler;
-			this.subscribe('/topic/send', function(data) {
-				handler.socketMessageHandler(JSON.parse(data.body));
+			console.log('Connected: frame demo server.');
+			me.isconnected = true;
+			var handler = me.handler;
+			this.subscribe('/topic/match', function(data) {
+				alert(data.body);
+//				handler.socketMessageHandler(JSON.parse(data.body));
 			});
+			console.log('Subscribed: /topic/match');
 		});
 	}
-
+	
 	// 断开连接
 	function disconnect() {
 		if (stompClient !== null) {
@@ -40,6 +48,14 @@ function websocket() {
 			console.error("<b>WebSocket doesn't connected.</b>");
 		}
 	}
+	
+	// 订阅帧同步信息
+	this.subscribe = function() {
+		this.stompClient.subscribe('/topic/callback', function(data) {
+//			handler.socketMessageHandler(JSON.parse(data.body));
+			console.log(data.body);
+		});
+	}
 
 }
 
@@ -49,17 +65,13 @@ function handler() {
 		var cmd = msg.cmd;
 		var pid = msg.playerId;
 		switch (cmd) {
-		case CHARACTER_STATUS['CREATE']:
-			create(pid);
+		case PLAYER_STATUS['CREATE']:
+			mygame.addPlayer(new player(pid));
 			break;
 		default:
-			if (pid == playerId) {
-				// 自己的操作
-				characters[no].status = cmd;
-			} else {
-				// 对方的操作
-				var op = no == 'c1' ? 'c2' : 'c1'
-				characters[op].status = cmd;
+			var p = mygame.getPlayerByPlayerId(pid);
+			if (null != p){
+				p.statusmachine.status = cmd;
 			}
 			break;
 		}
@@ -68,7 +80,7 @@ function handler() {
 
 function toJson(cmd) {
 	var data = new Object();
-	data.playerId = playerId;
+	data.playerId = 0;
 	data.cmd = cmd;
 
 	return JSON.stringify(data);

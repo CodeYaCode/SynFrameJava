@@ -45,23 +45,17 @@ public class RoomProcessor {
      * @param playerId
      * @return
      */
-    public boolean addNewPlayer(int playerId) {
-        if (playerId == PlayerConstant.LEFT_PLAYER_ID) {
-            if (null != this.room.getLeft()) {
-                // 已经有左边玩家了
-                return false;
-            }
+    public int addNewPlayer(int playerId) {
+    	if (this.room.getNum() == 0) {
             this.room.setLeft(new Player(playerId));
-            return true;
-        } else if (playerId == PlayerConstant.RIGHT_PLAYER_ID) {
-            if (null != this.room.getRight()) {
-                // 已经有右边玩家了
-                return false;
-            }
-            this.room.setRight(new Player(playerId));
-            return true;
-        }
-        return false;
+            this.room.incNum();
+            return PlayerConstant.LEFT_PLAYER;
+    	} else if (this.room.getNum() == 1 && this.room.getLeft().getPlayerId() != playerId) {
+            this.room.setLeft(new Player(playerId));
+            this.room.incNum();
+            return PlayerConstant.RIGHT_PLAYER;
+    	}
+    	return -1;
     }
     
     /**

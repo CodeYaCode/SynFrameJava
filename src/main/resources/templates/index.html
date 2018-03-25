@@ -3,28 +3,37 @@
 <html lang="en">
 <head>
 <title>Frame Example</title>
-<link rel="stylesheet" type="text/css" href="static/css/index.css">
+<link rel="stylesheet" type="text/css" href="../static/css/index.css">
 
 </head>
 <body>
-	<div class="playerId"></div>
-	<div class="content">
-		<!-- <div class="character" id="c1"></div> -->
-		<!-- <div class="character" id="c2"></div> -->
+	<div class="status red">DISCONNECTED.</div>
+	<div class="container">
+		<div class="content">
+			<!-- <div class="character" id="c1"></div> -->
+			<!-- <div class="character" id="c2"></div> -->
+		</div>
+		<div class="ctrl">
+			<input id="playerId" value="0" />
+			<button class="start">START</button>
+			<button class="renew">RENEW</button>
+		</div>
 	</div>
+	
 	<div class="ctl">
 		<button class="btn" id="idle">idle</button>
 		<button class="btn" id="run">run</button>
 		<button class="btn" id="attack">attack</button>
 		<button class="btn" id="dead">dead</button>
 		<button class="btn" id="start">start</button>
+		<button class="btn" id="stop">stop</button>
 	</div>
 
-	<script src="static/js/jquery-3.3.1.min.js"></script>
-    <script src="static/js/sockjs.min.js"></script>
-    <script src="static/js/stomp.min.js"></script>
-	<script src="static/js/index.js"></script>
+	<script src="../static/js/thirdpart/jquery-3.3.1.min.js"></script>
+    <script src="../static/js/thirdpart/sockjs.min.js"></script>
+    <script src="../static/js/thirdpart/stomp.min.js"></script>
+	<script src="../static/js/index.js"></script><!-- 
     <script src="static/js/websocket.js"></script>
-	<script src="static/js/character.js"></script>
+	<script src="static/js/character.js"></script> -->
 </body>
 </html>

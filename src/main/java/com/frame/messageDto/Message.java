@@ -21,19 +21,59 @@ public class Message {
      */
     private int playerId;
     /**
+     * operation
+     */
+    protected int op;
+    /**
      * command
      */
-    private int cmd;
+    protected int cmd;
+    /**
+     * key frame
+     */
+    private boolean key;
+    
+    public Message playerId(int playerId) {
+    	this.playerId = playerId;
+    	return this;
+    }
+    
+    public Message op(int op) {
+    	this.op = op;
+    	return this;
+    }
+    
+    public Message cmd(int cmd) {
+    	this.cmd = cmd;
+    	return this;
+    }
+    
     public int getPlayerId() {
         return playerId;
     }
     public void setPlayerId(int playerId) {
         this.playerId = playerId;
     }
-    public int getCmd() {
+    public int getOp() {
+		return op;
+	}
+	public void setOp(int op) {
+		this.op = op;
+	}
+	public int getCmd() {
         return cmd;
     }
     public void setCmd(int cmd) {
         this.cmd = cmd;
     }
+	public boolean isKey() {
+		return key;
+	}
+	public void setKey(boolean key) {
+		this.key = key;
+	}
+	@Override
+	public String toString() {
+		return "Message [playerId=" + playerId + ", op=" + op + ", cmd=" + cmd + ", key=" + key + "]";
+	}
 }
