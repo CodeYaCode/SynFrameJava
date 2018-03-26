@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.alibaba.fastjson.JSON;
-import com.frame.messageDto.Message;
 
 /**
  * Room.java
@@ -31,7 +30,7 @@ public class Room {
     
     private int num;
     
-    private Map<Integer, List<Message>> msgQueue = new ConcurrentHashMap<Integer, List<Message>>();
+    private Map<Integer, List<String>> msgQueue = new ConcurrentHashMap<Integer, List<String>>();
     
     // 帧号
     private volatile int frameNo;
@@ -40,17 +39,20 @@ public class Room {
     
     // 每一帧的逻辑
     public synchronized String tick() {
-    	if (!start) {
+    	if (!this.start) {
+    	    if (this.num == 2) {
+    	        this.start = true;
+    	    }
     		return "";
     	}
-    	List<Message> queue = this.msgQueue.get(frameNo);
+    	List<String> queue = this.msgQueue.get(frameNo);
     	frameNo++;
-    	this.msgQueue.put(frameNo, new LinkedList<Message>());
+    	this.msgQueue.put(frameNo, new LinkedList<String>());
     	return JSON.toJSONString(queue);
     }
     
     // 增加新的逻辑
-    public synchronized void addMessage(Message newMessage) {
+    public synchronized void addMessage(String newMessage) {
     	if (!start) {
     		return ;
     	}
@@ -65,7 +67,7 @@ public class Room {
     		return ;
     	}
     	this.frameNo = 1;
-    	this.msgQueue.put(this.frameNo, new LinkedList<Message>());
+    	this.msgQueue.put(this.frameNo, new LinkedList<String>());
     	this.start = true;
     }
 

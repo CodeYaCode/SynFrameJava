@@ -2,7 +2,6 @@
 const DEFAULT_ADDRESS = "/ws";
 
 function websocket(framecontroller) {
-	this.handler = new handler();
 	this.socket = null;
 	this.stompClient = null;
 	this.framecontroller = framecontroller;
@@ -21,12 +20,17 @@ function websocket(framecontroller) {
 		this.stompClient.connect({}, function() {
 			console.log('Connected: frame demo server.');
 			me.isconnected = true;
-			var handler = me.handler;
+			var framecontroller = me.framecontroller;
 			this.subscribe('/topic/match', function(data) {
-				alert(data.body);
-//				handler.socketMessageHandler(JSON.parse(data.body));
+				framecontroller.matchHandler(data.body);
 			});
 			console.log('Subscribed: /topic/match');
+
+			// 订阅帧同步信息
+			this.subscribe('/topic/frame', function(data) {
+				framecontroller.frameHandler(data.body);
+			});
+			console.log('Subscribed: /topic/frame');
 		});
 	}
 	
@@ -49,33 +53,6 @@ function websocket(framecontroller) {
 		}
 	}
 	
-	// 订阅帧同步信息
-	this.subscribe = function() {
-		this.stompClient.subscribe('/topic/callback', function(data) {
-//			handler.socketMessageHandler(JSON.parse(data.body));
-			console.log(data.body);
-		});
-	}
-
-}
-
-// websocket message handler
-function handler() {
-	this.socketMessageHandler = function(msg) {
-		var cmd = msg.cmd;
-		var pid = msg.playerId;
-		switch (cmd) {
-		case PLAYER_STATUS['CREATE']:
-			mygame.addPlayer(new player(pid));
-			break;
-		default:
-			var p = mygame.getPlayerByPlayerId(pid);
-			if (null != p){
-				p.statusmachine.status = cmd;
-			}
-			break;
-		}
-	}
 }
 
 function toJson(cmd) {

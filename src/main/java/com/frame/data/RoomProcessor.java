@@ -21,6 +21,8 @@ import com.frame.domain.Room;
  */
 public class RoomProcessor {
     private Room room;
+    
+    private WebSocketMessageUtil webSocketMessageUtil;
 
     private static RoomProcessor instance = new RoomProcessor();
     
@@ -40,22 +42,33 @@ public class RoomProcessor {
         this.room = room;
     }
     
+    public void setWebSocketMessageUtil(WebSocketMessageUtil webSocketMessageUtil) {
+        this.webSocketMessageUtil = webSocketMessageUtil;
+    }
+    
     /**
      * 添加新玩家
      * @param playerId
      * @return
      */
-    public int addNewPlayer(int playerId) {
+    public int addNewPlayer() {
+        int result = -1;
     	if (this.room.getNum() == 0) {
-            this.room.setLeft(new Player(playerId));
+            this.room.setLeft(new Player(PlayerConstant.LEFT_PLAYER_ID));
             this.room.incNum();
-            return PlayerConstant.LEFT_PLAYER;
-    	} else if (this.room.getNum() == 1 && this.room.getLeft().getPlayerId() != playerId) {
-            this.room.setLeft(new Player(playerId));
+            result = PlayerConstant.LEFT_PLAYER_ID;
+    	} else if (this.room.getNum() == 1) {
+            this.room.setRight(new Player(PlayerConstant.RIGHT_PLAYER_ID));
             this.room.incNum();
-            return PlayerConstant.RIGHT_PLAYER;
+            result = PlayerConstant.RIGHT_PLAYER_ID;
     	}
-    	return -1;
+    	try {
+    	    webSocketMessageUtil.pushRoomInfo();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    	return result;
     }
     
     /**

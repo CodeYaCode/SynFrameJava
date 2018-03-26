@@ -6,6 +6,7 @@ document.write('<script type="text/javascript" src="'+path+'/global.js"></script
 document.write('<script type="text/javascript" src="'+path+'/websocket.js"></script>');
 document.write('<script type="text/javascript" src="'+path+'/game.js"></script>');
 document.write('<script type="text/javascript" src="'+path+'/player.js"></script>');
+document.write('<script type="text/javascript" src="'+path+'/animation.js"></script>');
 document.write('<script type="text/javascript" src="'+path+'/statusmachine.js"></script>');
 document.write('<script type="text/javascript" src="'+path+'/framecontroller.js"></script>');
 

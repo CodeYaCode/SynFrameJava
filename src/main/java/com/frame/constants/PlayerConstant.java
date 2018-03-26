@@ -17,7 +17,7 @@ package com.frame.constants;
  */
 public interface PlayerConstant {
     // 左边玩家
-    public final static int LEFT_PLAYER = 0;
+    public final static int LEFT_PLAYER_ID = 0;
     // 右边玩家
-    public final static int RIGHT_PLAYER = 1;
+    public final static int RIGHT_PLAYER_ID = 1;
 }

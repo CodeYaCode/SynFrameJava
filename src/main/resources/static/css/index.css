@@ -47,21 +47,18 @@ body {
     margin: 0 auto;
     padding: 0;
     width: 960px;
-    height: 300px;
+    height: 150px;
     background: #000;
 }
 /* content end */
-/* ctrl start */
-#playerId {
-    position: relative;
-    top: 50px;
-    width: 50px;
-    height: 25px;
-    text-align: center;
-    font-size: 15px;
-    border-style: none;
-    border-radius: 5px;
+/* log start */
+.log {
+	width: 960px;
+	height: 200px;
+	color: #fff;
 }
+/* log end */
+/* ctrl start */
 .start {
     position: relative;
     left: 50px;
@@ -113,6 +110,7 @@ body {
     background-image: url('../image/player.png');
     background-repeat: no-repeat;
     background-position: 0px 0px;
+    float: left;
 }
 
 .me {

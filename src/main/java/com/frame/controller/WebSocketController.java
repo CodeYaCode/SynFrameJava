@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 
 import com.frame.constants.FrameConstant;
 import com.frame.data.RoomProcessor;
-import com.frame.messageDto.Message;
 
 /**
  * WebSocketController.java
@@ -32,15 +31,15 @@ public class WebSocketController {
     private SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/send")
-    public void send(Message message) throws Exception {
-    	System.out.println(message);
+    public void send(String message) throws Exception {
+    	System.out.println("message: " + message);
     	RoomProcessor.getInstance().getRoom().addMessage(message);
     }
 
     @Scheduled(fixedRate = FrameConstant.FRMAE_INTERVAL)
     public void callback() throws Exception {
         // 发现消息
-        messagingTemplate.convertAndSend("/topic/callback", RoomProcessor.getInstance().getRoom().tick());
+        messagingTemplate.convertAndSend("/topic/frame", RoomProcessor.getInstance().getRoom().tick());
     }
     
 }

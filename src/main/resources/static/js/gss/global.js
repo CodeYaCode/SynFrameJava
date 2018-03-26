@@ -4,7 +4,8 @@
 */
 global = {}
 
-global.playerId = null;
+// default playerId = -1
+global.playerId = -1
 
 // setInterval params
 global.FPS = 8;

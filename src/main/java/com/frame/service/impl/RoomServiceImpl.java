@@ -35,10 +35,11 @@ public class RoomServiceImpl implements IRoomService {
 			// 是操作相关
 			switch(message.getCmd()) {
 				case MatchConstant.MATCH_OPERATION_START:
-					int result = RoomProcessor.getInstance().addNewPlayer(message.getPlayerId());
+					int result = RoomProcessor.getInstance().addNewPlayer();
 					if (result == -1) {
 						return FrameConstant.getOperationResult(message, FrameConstant.OPERATION_FAIL, "");
 					} else {
+					    // 设置一下playerId
 						return FrameConstant.getOperationResult(message, FrameConstant.OPERATION_SUCCESS, String.valueOf(result));
 					}
 				case MatchConstant.MATCH_OPERATION_RENEW:
