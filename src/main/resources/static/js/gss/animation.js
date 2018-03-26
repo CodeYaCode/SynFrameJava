@@ -3,8 +3,9 @@
 function animation(player) {
 	this.player = player;
 	
+	// 每一帧执行的逻辑
 	this.update = function() {
-		switch(this.player.statusmachine.oldStatus) {
+		switch(this.player.statusmachine.status) {
 		case global.PLAYER_STATUS['IDLE']:
 			this.idel();
 			break;
@@ -54,13 +55,16 @@ function animation(player) {
 //		}
 		if (this.player.imageX <= imageXEnd) {
 			// 放完了，状态变为idle
-			this.player.statusmachine.oldStatus = global.PLAYER_STATUS['IDLE'];
+			this.player.statusmachine.status = global.PLAYER_STATUS['IDLE'];
 			this.player.imageX = 0;
 		}
 		this.player.imageY = imageY;
 	    this.player.getJqObj().css('background-position', this.player.imageX + 'px ' + this.player.imageY + 'px');
-	    if (this.player.statusmachine.oldStatus == global.PLAYER_STATUS['RUN']) {
+	    if (this.player.statusmachine.status == global.PLAYER_STATUS['RUN']) {
 	    	this.player.move();
+	    }
+	    if (this.player.statusmachine.status == global.PLAYER_STATUS['ATTACK']) {
+	    	this.player.attack();
 	    }
 	}
 }

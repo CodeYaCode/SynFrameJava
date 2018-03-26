@@ -56,34 +56,36 @@ body {
 	width: 960px;
 	height: 200px;
 	color: #fff;
+	overflow-y: scroll;
 }
 /* log end */
 /* ctrl start */
-.start {
-    position: relative;
+.btn {
+	position: relative;
+    width: 100px;
+    height: 30px;
+    border-style: none;
+    border-radius: 15px;
+}
+.btn:hover {
+    cursor: pointer;
+    background: #ccc;
+}
+.join {
     left: 50px;
     top: 50px;
-    width: 100px;
-    height: 30px;
-    border-style: none;
-    border-radius: 15px;
 }
-.start:hover {
+.join:hover {
     cursor: pointer;
     background: #ccc;
 }
-.renew {
-    position: relative;
+.start {
     left: 100px;
     top: 50px;
-    width: 100px;
-    height: 30px;
-    border-style: none;
-    border-radius: 15px;
 }
-.renew:hover {
-    cursor: pointer;
-    background: #ccc;
+.renew {
+    left: 150px;
+    top: 50px;
 }
 /* ctrl end */
 /* container end*/

@@ -25,13 +25,17 @@ function websocket(framecontroller) {
 				framecontroller.matchHandler(data.body);
 			});
 			console.log('Subscribed: /topic/match');
-
-			// 订阅帧同步信息
-			this.subscribe('/topic/frame', function(data) {
-				framecontroller.frameHandler(data.body);
-			});
-			console.log('Subscribed: /topic/frame');
 		});
+	}
+	
+	this.subscribeFrame = function() {
+		// 订阅帧同步信息
+		var me = this;
+		this.stompClient.subscribe('/topic/frame', function(data) {
+//			console.log
+			me.framecontroller.frameHandler(data.body);
+		});
+		console.log('Subscribed: /topic/frame');
 	}
 	
 	// 断开连接

@@ -12,8 +12,8 @@ import com.frame.messageDto.OperationMessage;
 public class FrameConstant {
 
 	// 帧频
-//	public final static int FRMAE_INTERVAL = 1000 / 30;
-    public final static int FRMAE_INTERVAL = 1000 / 1;
+	public final static int FRMAE_INTERVAL = 1000 / 30;
+//    public final static int FRMAE_INTERVAL = 1000 / 1;
 	
 	// ----------------------------- OPERATION ----------------------------- //
 	// 比赛相关操作类别码

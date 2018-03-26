@@ -3,14 +3,13 @@
 function statusmachine(player) {
 	this.player = player;
 	this.status = global.PLAYER_STATUS['IDLE'];
-	this.oldStatus = global.PLAYER_STATUS['IDLE'];
+//	this.oldStatus = global.PLAYER_STATUS['IDLE'];
 
-	this.updateStatus = function(newStatus) {
+	this.sendStatusChange = function(newStatus) {
 		if (this.canChangeStatus(newStatus)) {
-			this.oldStatus = newStatus;
-
+//			this.status = newStatus;
 			var obj = global.msg(global.OPERATION['PLAYER_STATUS'], newStatus);
-			switch(this.oldStatus) {
+			switch(newStatus) {
 			case global.PLAYER_STATUS['RUN']:
 				obj.direction = this.player.direction;
 				break;
@@ -29,6 +28,9 @@ function statusmachine(player) {
 	}
 	
 	this.canChangeStatus = function(newStatus) {
-		return this.oldStatus == global.PLAYER_STATUS['IDLE'];
+		if (this.status == global.PLAYER_STATUS['RUN']) {
+			return newStatus == global.PLAYER_STATUS['RUN'];
+		}
+		return this.status == global.PLAYER_STATUS['IDLE'];
 	}
 }

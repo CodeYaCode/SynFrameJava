@@ -52,6 +52,7 @@ function framecontroller(game) {
 	// match handler
 	this.matchHandler = function(msg) {
 		msg = JSON.parse(msg);
+		console.log(msg);
 		// 清除数据，重新构建
 		this.game.clear();
 		if (msg.left != null && msg.left.playerId == global.playerId) {
@@ -87,10 +88,21 @@ function framecontroller(game) {
 			for (var i = 0; i < msg.length; i++) {
 				var data = $.parseJSON(msg[i]);
 				if (null != data) {
-					this.game.getPlayerByPlayerId(data.playerId).statusmachine.updateStatus(data.cmd);
+					var p = this.game.getPlayerByPlayerId(data.playerId);
+					if (null != p) {
+						console.log(data);
+//						p.statusmachine.status = data.cmd;
+						if (data.cmd == global.PLAYER_STATUS['RUN']) {
+			    			p.direction = data.direction;
+			    			p.getJqObj().removeClass('right left').addClass(data.direction);
+						}
+						// 同步状态
+			    		p.updateStatus(data.cmd);
+					}
 				}
 			}
 		}
+		// 帧驱动动画
 		this.tick();
 	}
 	

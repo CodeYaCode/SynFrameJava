@@ -40,9 +40,6 @@ public class Room {
     // 每一帧的逻辑
     public synchronized String tick() {
     	if (!this.start) {
-    	    if (this.num == 2) {
-    	        this.start = true;
-    	    }
     		return "";
     	}
     	List<String> queue = this.msgQueue.get(frameNo);

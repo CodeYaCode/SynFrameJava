@@ -3,14 +3,15 @@
 function game() {
 	this.me = null;
 	this.players = [];
+	this.seed = 5;
 	this.framecontroller = new framecontroller(this);
 
 	// initial
 	this.init = function() {
 		// 添加一个单机玩家
-		var np = new player(global.playerId, this);
-		np.init();
-		this.addPlayer(np);
+//		var np = new player(global.playerId, this);
+//		np.init();
+//		this.addPlayer(np);
 		this.framecontroller.start(global.MODE['INTERVAL']);
 		// 操作成功,打开websocket连接
 		this.framecontroller.start(global.MODE['WEBSOCKET']);
@@ -35,7 +36,7 @@ function game() {
 		this.players.forEach(function(p) {
 			if (p.playerId == playerId) {
 				player = p;
-				return ;
+				return player;
 			}
 		});
 		return player;
@@ -47,8 +48,9 @@ function game() {
 			p.update();
 		});
 	}
-
-	this.start = function() {
+	
+	// 加入房间
+	this.join = function() {
 		var obj = global.msg(global.OPERATION['MATCH'], global.MATCH['START']);
 		var me = this;
 		$.ajax({
@@ -62,7 +64,6 @@ function game() {
 					// 清空现有的玩家
 					me.me = null;
 					me.players = [];
-					me.stop();
 				    global.playerId = parseInt(data.data);
 				} else {
 					alert('加入失败,renew一下');
@@ -70,11 +71,26 @@ function game() {
 			}
 		});
 	}
-
-	this.stop = function() {
-		this.framecontroller.stop();
+	
+	// 开始帧同步
+	this.start = function() {
+		if (this.players.length < 2) {
+			return ;
+		}
+		// 开始订阅帧同步
+		this.framecontroller.websocket.subscribeFrame();
+		var me = this;
+		$.ajax({
+			url: 'start',
+			data: obj,
+			type: 'POST',
+			success: function(data) {
+				me.stop();
+			}
+		});
 	}
 
+	// 重置房间
 	this.renew = function() {
 		var obj = global.msg(global.OPERATION['MATCH'], global.MATCH['RENEW']);
 		$.ajax({
@@ -85,6 +101,10 @@ function game() {
 				console.log($.parseJSON(data));
 			}
 		});
+	}
+
+	this.stop = function() {
+		this.framecontroller.stop();
 	}
 	
 	this.clear = function() {

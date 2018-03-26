@@ -17,12 +17,13 @@ function player(playerId, game) {
 		// 界面上增加玩家
 		this.direction = direction;
 		this.left = left;
-	    $('.content').append('<div class="player '+me+' '+this.direction+'"></div>');
-	    this.jqObj = $('.'+this.direction+'');
+	    $('.content').append('<div class="player '+me+' '+this.direction+'" id="c'+this.playerId+'"></div>');
+	    this.jqObj = $('#c'+this.playerId+'');
+	    console.log(this.jqObj);
 	    this.jqObj.css('left', this.left + 'px');
 	    var me = this;
 	    $(document).keydown(function(event){
-//	    	console.log(event.keyCode)
+	    	console.log(event.keyCode)
 	    	if (!me.getJqObj().hasClass('me')) {
 	    		return ;
 	    	}
@@ -30,17 +31,17 @@ function player(playerId, game) {
 	    		case 37:
 	    			// to left
 	    			me.direction = 'left';
-	    			$('.me').removeClass('right').addClass('left');
-		    		me.updateStatus(global.PLAYER_STATUS['RUN']);
+	    			me.jqObj.removeClass('right').addClass('left');
+		    		me.statusmachine.sendStatusChange(global.PLAYER_STATUS['RUN']);
 	    			break;
 	    		case 39:
 	    			// to right
 	    			me.direction = 'right';
-	    			$('.me').removeClass('left').addClass('right');
-		    		me.updateStatus(global.PLAYER_STATUS['RUN']);
+	    			me.jqObj.removeClass('left').addClass('right');
+		    		me.statusmachine.sendStatusChange(global.PLAYER_STATUS['RUN']);
 	    			break;
 	    		case 65:
-		    		me.updateStatus(global.PLAYER_STATUS['ATTACK']);
+		    		me.statusmachine.sendStatusChange(global.PLAYER_STATUS['ATTACK']);
 	    			break;
 	    	}
 	    });
@@ -53,7 +54,8 @@ function player(playerId, game) {
 	}
 
 	this.updateStatus = function(newStatus) {
-		this.statusmachine.updateStatus(newStatus);
+		// 真正修改状态的地方
+		this.statusmachine.status = newStatus;
 	}
 
 	// get jquery object
@@ -72,5 +74,19 @@ function player(playerId, game) {
 			}
 		}
 		this.getJqObj().css('left', this.left + 'px');
+	}
+	
+	this.random = function(max=0, min=1) {
+		this.game.seed = (this.game.seed * 9301 + 49297) % 233280;
+		var rnd = this.game.seed / 233280.0;
+		return min + rnd * (max - min);
+	}
+	
+	this.attack = function() {
+		// 使用原生的随机函数生成的值序列不同
+//		var damage = Math.random();
+		// 需要自己重写一个
+		var damage = this.random(123);
+		$('.log').append('<div>'+this.playerId+' '+damage+'</div>');
 	}
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.frame.data.RoomProcessor;
 import com.frame.messageDto.Message;
 import com.frame.service.IRoomService;
 
@@ -43,6 +44,15 @@ public class IndexController {
     	message.playerId(Integer.parseInt(request.getParameter("playerId")))
     		.op(Integer.parseInt(request.getParameter("op")))
     		.cmd(Integer.parseInt(request.getParameter("cmd")));
+    	System.out.println(String.format("New ajax[%s]", message.toString()));
     	return roomService.doMatch(message);
     }
+    
+    @PostMapping("/start")
+    @ResponseBody
+    public void start(HttpServletRequest request) throws Exception {
+    	RoomProcessor.getInstance().getRoom().start();
+    	System.out.println(String.format("New ajax[%s]", "start"));
+    }
+    
 }

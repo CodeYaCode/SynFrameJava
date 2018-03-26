@@ -15,6 +15,11 @@ $(document).ready(function() {
 	var mygame = new game();
 	mygame.init();
 	var playerId = null;
+	
+	$('.join').click(function() {
+		// join room
+		mygame.join();
+	});
 
 	$('.start').click(function() {
 		// start game
