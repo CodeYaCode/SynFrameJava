@@ -85,6 +85,7 @@ function game() {
 			data: obj,
 			type: 'POST',
 			success: function(data) {
+				// 关闭时钟渲染
 				me.stop();
 			}
 		});

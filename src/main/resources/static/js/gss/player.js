@@ -76,7 +76,7 @@ function player(playerId, game) {
 		this.getJqObj().css('left', this.left + 'px');
 	}
 	
-	this.random = function(max=0, min=1) {
+	this.random = function(min=0, max=1) {
 		this.game.seed = (this.game.seed * 9301 + 49297) % 233280;
 		var rnd = this.game.seed / 233280.0;
 		return min + rnd * (max - min);
@@ -86,7 +86,7 @@ function player(playerId, game) {
 		// 使用原生的随机函数生成的值序列不同
 //		var damage = Math.random();
 		// 需要自己重写一个
-		var damage = this.random(123);
+		var damage = this.random();
 		$('.log').append('<div>'+this.playerId+' '+damage+'</div>');
 	}
 }

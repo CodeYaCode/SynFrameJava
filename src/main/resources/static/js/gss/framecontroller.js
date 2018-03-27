@@ -3,6 +3,7 @@
 function framecontroller(game) {
 	this.game = game;
 	this.intervalId = null;
+	this.frameNo = 0;
 	this.websocket = new websocket(this);
 	this.tick = function() {
 		game.update();
@@ -103,7 +104,7 @@ function framecontroller(game) {
 			}
 		}
 		// 帧驱动动画
-		this.tick();
+//		this.tick();
 	}
 	
 }
